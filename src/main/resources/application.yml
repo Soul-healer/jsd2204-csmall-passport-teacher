@@ -1,0 +1,15 @@
+spring:
+  profiles:
+    # 激活Profile配置
+    active: dev
+  jackson:
+    # 响应JSON时不包含为null的属性
+    default-property-inclusion: non_null
+
+# 指定Mybatis的XML文件的位置
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+
+# 开启Knife4j的增强模式
+knife4j:
+  enable: true

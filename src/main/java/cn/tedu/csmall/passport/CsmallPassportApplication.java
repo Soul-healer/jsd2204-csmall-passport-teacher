@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class Jsd2204CsmallPassportTeacherApplication {
+public class CsmallPassportApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(Jsd2204CsmallPassportTeacherApplication.class, args);
+        SpringApplication.run(CsmallPassportApplication.class, args);
     }
 
 }

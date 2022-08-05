@@ -10,12 +10,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
 public class AdminServiceImpl implements IAdminService {
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     @Autowired
     private AdminMapper adminMapper;
 
@@ -43,7 +46,7 @@ public class AdminServiceImpl implements IAdminService {
         admin.setLoginCount(0);
         // 对密码进行加密处理
         String rawPassword = admin.getPassword();
-        String encodedPassword = new BCryptPasswordEncoder().encode(rawPassword);
+        String encodedPassword = passwordEncoder.encode(rawPassword);
         admin.setPassword(encodedPassword);
         // 日志
         log.debug("即将插入管理员数据：{}", admin);

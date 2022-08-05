@@ -21,8 +21,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        http.csrf().disable(); // 禁用防止伪造跨域攻击
+
         http.authorizeRequests() // 要求请求必须被授权
-            .antMatchers("/**")  // 匹配一些路径
+            .antMatchers("/**") // 匹配一些路径
             .permitAll() // 允许访问
             .anyRequest() // 除以上配置以外的请求
             .authenticated(); // 经过认证的

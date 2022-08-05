@@ -1,6 +1,7 @@
 package cn.tedu.csmall.passport.mapper;
 
 import cn.tedu.csmall.passport.pojo.entity.Admin;
+import cn.tedu.csmall.passport.pojo.vo.AdminLoginInfoVO;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,13 @@ public class AdminMapperTests {
         String username = "test-admin-007";
         int count = mapper.countByUsername(username);
         log.debug("根据用户名【{}】统计，数量={}", username, count);
+    }
+
+    @Test
+    void testGetLoginInfoByUsername() {
+        String username = "test-admin-009";
+        AdminLoginInfoVO loginInfo = mapper.getLoginInfoByUsername(username);
+        log.debug("根据用户名【{}】查询用户的登录相关信息：{}", username, loginInfo);
     }
 
 }

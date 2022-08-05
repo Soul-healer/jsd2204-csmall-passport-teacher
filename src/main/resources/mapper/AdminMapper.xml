@@ -26,4 +26,27 @@
             username=#{username}
     </select>
 
+    <!-- AdminLoginInfoVO getLoginInfoByUsername(String username); -->
+    <select id="getLoginInfoByUsername" resultMap="LoginResultMap">
+        SELECT
+            <include refid="LoginQueryFields"/>
+        FROM
+            ams_admin
+        WHERE
+            username=#{username}
+    </select>
+
+    <sql id="LoginQueryFields">
+        <if test="true">
+            id, username, password, enable
+        </if>
+    </sql>
+
+    <resultMap id="LoginResultMap" type="cn.tedu.csmall.passport.pojo.vo.AdminLoginInfoVO">
+        <id column="id" property="id" />
+        <result column="username" property="username" />
+        <result column="password" property="password" />
+        <result column="enable" property="enable" />
+    </resultMap>
+
 </mapper>

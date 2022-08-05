@@ -10,6 +10,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Slf4j
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -30,6 +32,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throw new UsernameNotFoundException(message);
         }
 
+        // 从查询结果中找出权限信息
+        List<String> permissions = loginInfo.getPermissions();
+
         // 准备返回结果
         log.debug("根据用户名【{}】从数据库查询到有效的用户信息：{}", s, loginInfo);
         UserDetails userDetails = User.builder()
@@ -39,7 +44,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 .accountLocked(false) // 账号是否已经锁定
                 .credentialsExpired(false) // 认证是否已经过期
                 .disabled(loginInfo.getEnable() == 0) // 是否已经禁用
-                .authorities("这是临时使用的且无意义的权限值") // 权限，注意，此方法的参数值不可以为null
+                .authorities(permissions.toArray(new String[]{})) // 权限，注意，此方法的参数值不可以为null
                 .build();
         log.debug("即将向Spring Security返回UserDetails：{}", userDetails);
         return userDetails;

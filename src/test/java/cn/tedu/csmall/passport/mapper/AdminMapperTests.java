@@ -35,7 +35,7 @@ public class AdminMapperTests {
 
     @Test
     void testGetLoginInfoByUsername() {
-        String username = "test-admin-009";
+        String username = "root";
         AdminLoginInfoVO loginInfo = mapper.getLoginInfoByUsername(username);
         log.debug("根据用户名【{}】查询用户的登录相关信息：{}", username, loginInfo);
     }

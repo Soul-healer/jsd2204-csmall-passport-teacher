@@ -28,8 +28,13 @@ public class JsonResult<T> implements Serializable {
     private T data;
 
     public static JsonResult ok() {
+        return ok(null);
+    }
+
+    public static <T> JsonResult<T> ok(T data) {
         JsonResult jsonResult = new JsonResult();
         jsonResult.setState(ServiceCode.OK);
+        jsonResult.setData(data);
         return jsonResult;
     }
 

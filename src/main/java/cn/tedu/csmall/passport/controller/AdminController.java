@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
-@Api(tags = "管理员管理模块")
+@Api(tags = "1. 管理员管理模块")
 @Slf4j
 @RequestMapping("/admins")
 @RestController
@@ -22,6 +22,10 @@ public class AdminController {
 
     @Autowired
     private IAdminService adminService;
+
+    public AdminController() {
+        log.info("创建控制器：AdminController");
+    }
 
     @ApiOperation("添加管理员")
     @ApiOperationSupport(order = 100)

@@ -6,6 +6,12 @@ import lombok.Data;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
+/**
+ * 添加管理员的DTO类
+ *
+ * @author java@tedu.cn
+ * @version 0.0.1
+ */
 @Data
 public class AdminAddNewDTO implements Serializable {
 

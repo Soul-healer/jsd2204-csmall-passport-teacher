@@ -5,6 +5,12 @@ import lombok.Data;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+/**
+ * 管理员的实体类
+ *
+ * @author java@tedu.cn
+ * @version 0.0.1
+ */
 @Data
 public class Admin implements Serializable {
 

@@ -5,6 +5,12 @@ import lombok.Data;
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ * 管理员的登录数据VO
+ *
+ * @author java@tedu.cn
+ * @version 0.0.1
+ */
 @Data
 public class AdminLoginInfoVO implements Serializable {
 

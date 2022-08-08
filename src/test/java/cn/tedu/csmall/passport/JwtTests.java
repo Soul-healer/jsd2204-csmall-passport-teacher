@@ -1,5 +1,6 @@
 package cn.tedu.csmall.passport;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +13,9 @@ import java.util.Map;
 @Slf4j
 public class JwtTests {
 
+    // 密钥（盐）
+    String secretKey = "nmlfdasfdsaurefuifdknjfdskjhajhef";
+
     // 测试生成JWT
     @Test
     public void testGenerateJwt() {
@@ -19,9 +23,6 @@ public class JwtTests {
         Map<String, Object> claims = new HashMap<>();
         claims.put("id", 9527);
         claims.put("name", "liulaoshi");
-
-        // 密钥（盐）
-        String secretKey = "nmlfdasfdsaurefuifdknjfdskjhajhef";
 
         // JWT的组成部分：Header（头），Payload（载荷），Signature（签名）
         String jwt = Jwts.builder()
@@ -35,7 +36,24 @@ public class JwtTests {
                 .signWith(SignatureAlgorithm.HS256, secretKey)
                 .compact();
         log.debug("JWT = {}", jwt);
-        // eyJhbGciOiJIUzI1NiIsInR5cCI6Imp3dCJ9.eyJuYW1lIjoibGl1bGFvc2hpIiwiaWQiOjk1MjcsImV4cCI6MTY1OTkzMTUyMX0.TFyWBZ3l-y6rYbEYiVBbQjqnFNsFFR07K8lDES9TPs4
+        // eyJhbGciOiJIUzI1NiIsInR5cCI6Imp3dCJ9
+        // .
+        // eyJuYW1lIjoibGl1bGFvc2hpIiwiaWQiOjk1MjcsImV4cCI6MTY1OTkzMTUyMX0
+        // .
+        // TFyWBZ3l-y6rYbEYiVBbQjqnFNsFFR07K8lDES9TPs4
+
+        // eyJhbGciOiJIUzI1NiIsInR5cCI6Imp3dCJ9.eyJuYW1lIjoibGl1bGFvc2hpIiwiaWQiOjk1MjcsImV4cCI6MTY1OTkzOTM0N30.7rj8Lhus1EYXUxE4Zy1wx1WFpbvxIQEmya3-A9WZP20
+        // eyJhbGciOiJIUzI1NiIsInR5cCI6Imp3dCJ9.eyJuYW1lIjoibGl1bGFvc2hpIiwiaWQiOjk1MjcsImV4cCI6MTY1OTkzOTUzMH0.lwD_PzrqGXEgQs3KmMjsYzTmhsKbGhKnd1WkDkFpj5M
+    }
+
+    @Test
+    public void testParseJwt() {
+        String jwt = "eyJhbGciOiJIUzI1NiIsInR5cCI6Imp3dCJ9.eyJuYW1lIjoibGl1bGFvc2hpIiwiaWQiOjk1MjcsImV4cCI6MTY1OTkzOTUzMH0.lwD_PzrqGXEgQs3KmMjsYzTmhsKbGhKnd1WkDkFpj5M";
+        Claims claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwt).getBody();
+        Object id = claims.get("id");
+        Object name = claims.get("name");
+        log.debug("id={}", id);
+        log.debug("name={}", name);
     }
 
 }

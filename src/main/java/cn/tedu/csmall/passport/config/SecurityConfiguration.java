@@ -1,6 +1,8 @@
 package cn.tedu.csmall.passport.config;
 
+import cn.tedu.csmall.passport.filter.JwtAuthorizationFilter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -8,6 +10,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  * Spring Security的配置类
@@ -18,6 +21,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Slf4j
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    private JwtAuthorizationFilter jwtAuthorizationFilter;
 
     public SecurityConfiguration() {
         log.debug("加载配置类：SecurityConfiguration");
@@ -57,6 +63,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authenticated(); // 经过认证的
 
         http.formLogin(); // 启用登录表单，未授权的请求均会重定向到登录表单
+
+        // 将“JWT过滤器”添加在“认证过滤器”之前
+        http.addFilterBefore(jwtAuthorizationFilter,
+                UsernamePasswordAuthenticationFilter.class);
     }
 
 }

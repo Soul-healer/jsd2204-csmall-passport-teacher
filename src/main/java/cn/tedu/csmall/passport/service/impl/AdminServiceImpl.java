@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -61,6 +62,7 @@ public class AdminServiceImpl implements IAdminService {
         // 准备Claims
         Map<String, Object> claims = new HashMap<>();
         claims.put("username", loginUser.getUsername());
+        log.debug("生成JWT，向JWT中存入username：{}", loginUser.getUsername());
         // JWT的组成部分：Header（头），Payload（载荷），Signature（签名）
         String jwt = Jwts.builder()
                 // Header：用于声明算法与此数据的类型，以下配置的属性名是固定的

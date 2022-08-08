@@ -20,6 +20,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * JWT过滤器，主要实现：
+ * 1. 如果客户端提交请求没有携带JWT，直接放行，交由后续的组件进行处理
+ * 2. 如果客户端携带了有效的JWT，则解析，并创建为Authentication认证对象，
+ * 将此对象存入到Security上下文中，使得后续的组件能发现上下文中有认证信息，而将此请求视为“已认证”，
+ * 并且，后续还可以从此认证信息中获取用户身份的标识、判断访问权限
+ */
 @Slf4j
 @Component
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
@@ -33,11 +40,15 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
         log.debug("执行JwtAuthorizationFilter");
+
+        // 清除Security上下文中的数据
+        SecurityContextHolder.clearContext();
+
         // 从请求头中获取JWT
         String jwt = request.getHeader("Authorization");
         log.debug("从请求头中获取JWT：{}", jwt);
 
-        // 判断JWT数据是否不存在
+        // 判断JWT数据是否基本有效
         if (!StringUtils.hasText(jwt) || jwt.length() < 80) {
             log.debug("获取到的JWT是无效的，直接放行，交由后续的组件继续处理！");
             // 过滤器链继续执行，相当于：放行
@@ -61,6 +72,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         // 将用户信息封装到Security的上下文中
         SecurityContext securityContext = SecurityContextHolder.getContext();
         securityContext.setAuthentication(authentication);
+        log.debug("已经向Security的上下文中写入：{}", authentication);
 
         // 过滤器链继续执行，相当于：放行
         filterChain.doFilter(request, response);

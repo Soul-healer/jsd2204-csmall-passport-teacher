@@ -13,9 +13,11 @@ public interface IAdminService {
 
     /**
      * 管理员登录
+     *
      * @param adminLoginDTO 封装了管理员登录相关数据的对象
+     * @return 登录成功后此用户的JWT数据
      */
-    void login(AdminLoginDTO adminLoginDTO);
+    String login(AdminLoginDTO adminLoginDTO);
 
     /**
      * 增加管理员

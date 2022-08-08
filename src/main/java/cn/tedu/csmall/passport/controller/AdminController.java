@@ -31,10 +31,10 @@ public class AdminController {
     @ApiOperation("管理员登录")
     @ApiOperationSupport(order = 50)
     @PostMapping("/login")
-    public JsonResult<Void> login(AdminLoginDTO adminLoginDTO) {
+    public JsonResult<String> login(AdminLoginDTO adminLoginDTO) {
         log.debug("准备处理【管理员登录】的请求：{}", adminLoginDTO);
-        adminService.login(adminLoginDTO);
-        return JsonResult.ok();
+        String jwt = adminService.login(adminLoginDTO);
+        return JsonResult.ok(jwt);
     }
 
     @ApiOperation("添加管理员")

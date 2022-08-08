@@ -3,6 +3,7 @@ package cn.tedu.csmall.passport.service.impl;
 import cn.tedu.csmall.passport.ex.ServiceException;
 import cn.tedu.csmall.passport.mapper.AdminMapper;
 import cn.tedu.csmall.passport.pojo.dto.AdminAddNewDTO;
+import cn.tedu.csmall.passport.pojo.dto.AdminLoginDTO;
 import cn.tedu.csmall.passport.pojo.entity.Admin;
 import cn.tedu.csmall.passport.service.IAdminService;
 import cn.tedu.csmall.passport.web.ServiceCode;
@@ -26,6 +27,12 @@ public class AdminServiceImpl implements IAdminService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private AdminMapper adminMapper;
+
+    @Override
+    public void login(AdminLoginDTO adminLoginDTO) {
+        // 日志
+        log.debug("开始处理【管理员登录】的业务，参数：{}", adminLoginDTO);
+    }
 
     @Override
     public void addNew(AdminAddNewDTO adminAddNewDTO) {

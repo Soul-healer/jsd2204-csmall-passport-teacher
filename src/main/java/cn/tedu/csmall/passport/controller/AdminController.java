@@ -33,6 +33,7 @@ public class AdminController {
     @PostMapping("/login")
     public JsonResult<Void> login(AdminLoginDTO adminLoginDTO) {
         log.debug("准备处理【管理员登录】的请求：{}", adminLoginDTO);
+        adminService.login(adminLoginDTO);
         return JsonResult.ok();
     }
 

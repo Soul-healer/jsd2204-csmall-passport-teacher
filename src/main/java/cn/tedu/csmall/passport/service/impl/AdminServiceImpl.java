@@ -10,6 +10,9 @@ import cn.tedu.csmall.passport.web.ServiceCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -27,11 +30,18 @@ public class AdminServiceImpl implements IAdminService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private AdminMapper adminMapper;
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     @Override
     public void login(AdminLoginDTO adminLoginDTO) {
         // 日志
         log.debug("开始处理【管理员登录】的业务，参数：{}", adminLoginDTO);
+        // 调用AuthenticationManager执行认证
+        Authentication authentication = new UsernamePasswordAuthenticationToken(
+                adminLoginDTO.getUsername(), adminLoginDTO.getPassword());
+        authenticationManager.authenticate(authentication);
+        log.debug("认证通过！");
     }
 
     @Override

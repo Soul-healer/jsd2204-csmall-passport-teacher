@@ -37,7 +37,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 "/**/*.js",
                 "/**/*.css",
                 "/swagger-resources/**",
-                "/v2/api-docs"
+                "/v2/api-docs",
+                "/admins/login"
         };
 
         http.csrf().disable(); // 禁用防止伪造跨域攻击

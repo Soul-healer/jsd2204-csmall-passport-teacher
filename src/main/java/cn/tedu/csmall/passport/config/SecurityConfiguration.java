@@ -56,6 +56,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 "/admins/login"
         };
 
+        http.cors(); // 允许跨域访问
+
         http.csrf().disable(); // 禁用防止伪造跨域攻击
 
         http.authorizeRequests() // 要求请求必须被授权
@@ -64,7 +66,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .anyRequest() // 除以上配置以外的请求
                 .authenticated(); // 经过认证的
 
-        http.formLogin(); // 启用登录表单，未授权的请求均会重定向到登录表单
+        // http.formLogin(); // 启用登录表单，未授权的请求均会重定向到登录表单
 
         // 将“JWT过滤器”添加在“认证过滤器”之前
         http.addFilterBefore(jwtAuthorizationFilter,

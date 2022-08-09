@@ -15,6 +15,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
 
@@ -45,7 +46,7 @@ public class AdminController {
     @PreAuthorize("hasAuthority('/ams/admin/update')")
     @PostMapping("/add-new")
     public JsonResult<Void> addNew(@Valid AdminAddNewDTO adminAddNewDTO,
-            @AuthenticationPrincipal LoginPrincipal loginPrincipal) {
+            @ApiIgnore @AuthenticationPrincipal LoginPrincipal loginPrincipal) {
         log.debug("准备处理【添加管理员】的请求：{}", adminAddNewDTO);
         log.debug("当前登录的用户（当事人）的id：{}", loginPrincipal.getId());
         log.debug("当前登录的用户（当事人）的用户名：{}", loginPrincipal.getUsername());

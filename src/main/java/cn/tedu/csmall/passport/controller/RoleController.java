@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.List;
 
@@ -34,7 +35,7 @@ public class RoleController {
     @ApiOperationSupport(order = 401)
     @GetMapping("")
     public JsonResult<List<RoleListItemVO>> list(
-            @AuthenticationPrincipal LoginPrincipal loginPrincipal) {
+            @ApiIgnore @AuthenticationPrincipal LoginPrincipal loginPrincipal) {
         log.debug("准备处理【查询角色列表】的请求");
         log.debug("当前登录的用户（当事人）的id：{}", loginPrincipal.getId());
         log.debug("当前登录的用户（当事人）的用户名：{}", loginPrincipal.getUsername());

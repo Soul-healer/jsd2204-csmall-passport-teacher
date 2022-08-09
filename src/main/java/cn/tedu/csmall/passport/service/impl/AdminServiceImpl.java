@@ -5,6 +5,7 @@ import cn.tedu.csmall.passport.mapper.AdminMapper;
 import cn.tedu.csmall.passport.pojo.dto.AdminAddNewDTO;
 import cn.tedu.csmall.passport.pojo.dto.AdminLoginDTO;
 import cn.tedu.csmall.passport.pojo.entity.Admin;
+import cn.tedu.csmall.passport.security.AdminDetails;
 import cn.tedu.csmall.passport.service.IAdminService;
 import cn.tedu.csmall.passport.web.ServiceCode;
 import com.alibaba.fastjson.JSON;
@@ -57,7 +58,8 @@ public class AdminServiceImpl implements IAdminService {
                 authenticateResult.getPrincipal().getClass().getName());
 
         // 处理认证结果
-        User loginUser = (User) authenticateResult.getPrincipal();
+        AdminDetails loginUser = (AdminDetails) authenticateResult.getPrincipal();
+        log.debug("认证结果中的管理员id：{}", loginUser.getId());
         log.debug("认证结果中的用户名：{}", loginUser.getUsername());
         Collection<GrantedAuthority> authorities = loginUser.getAuthorities();
         log.debug("认证结果中的权限列表：{}", authorities);
@@ -68,8 +70,10 @@ public class AdminServiceImpl implements IAdminService {
         String secretKey = "nmlfdasfdsaurefuifdknjfdskjhajhef";
         // 准备Claims
         Map<String, Object> claims = new HashMap<>();
+        claims.put("id", loginUser.getId());
         claims.put("username", loginUser.getUsername());
         claims.put("authorities", authorityListString);
+        log.debug("生成JWT，向JWT中存入id：{}", loginUser.getId());
         log.debug("生成JWT，向JWT中存入username：{}", loginUser.getUsername());
         log.debug("生成JWT，向JWT中存入authorities：{}", authorityListString);
         // JWT的组成部分：Header（头），Payload（载荷），Signature（签名）

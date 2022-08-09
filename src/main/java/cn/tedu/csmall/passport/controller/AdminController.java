@@ -2,6 +2,7 @@ package cn.tedu.csmall.passport.controller;
 
 import cn.tedu.csmall.passport.pojo.dto.AdminAddNewDTO;
 import cn.tedu.csmall.passport.pojo.dto.AdminLoginDTO;
+import cn.tedu.csmall.passport.security.LoginPrincipal;
 import cn.tedu.csmall.passport.service.IAdminService;
 import cn.tedu.csmall.passport.web.JsonResult;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
@@ -10,6 +11,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,8 +44,11 @@ public class AdminController {
     @ApiOperationSupport(order = 100)
     @PreAuthorize("hasAuthority('/ams/admin/update')")
     @PostMapping("/add-new")
-    public JsonResult<Void> addNew(@Valid AdminAddNewDTO adminAddNewDTO) {
+    public JsonResult<Void> addNew(@Valid AdminAddNewDTO adminAddNewDTO,
+            @AuthenticationPrincipal LoginPrincipal loginPrincipal) {
         log.debug("准备处理【添加管理员】的请求：{}", adminAddNewDTO);
+        log.debug("当前登录的用户（当事人）的id：{}", loginPrincipal.getId());
+        log.debug("当前登录的用户（当事人）的用户名：{}", loginPrincipal.getUsername());
         adminService.addNew(adminAddNewDTO);
         return JsonResult.ok();
     }

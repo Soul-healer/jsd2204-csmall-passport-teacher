@@ -1,5 +1,6 @@
 package cn.tedu.csmall.passport.filter;
 
+import cn.tedu.csmall.passport.security.LoginPrincipal;
 import com.alibaba.fastjson.JSON;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -61,16 +62,21 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         // 尝试解析JWT
         String secretKey = "nmlfdasfdsaurefuifdknjfdskjhajhef";
         Claims claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwt).getBody();
-        Object username = claims.get("username");
-        Object authorityListString = claims.get("authorities");
+        Long id = claims.get("id", Long.class);
+        String username = claims.get("username", String.class);
+        String authorityListString = claims.get("authorities", String.class);
+        log.debug("从JWT中解析得到id：{}", id);
         log.debug("从JWT中解析得到username：{}", username);
         log.debug("从JWT中解析得到authorities：{}", authorityListString);
 
         // 准备Authentication对象，后续会将此对象封装到Security的上下文中
+        LoginPrincipal loginPrincipal = new LoginPrincipal();
+        loginPrincipal.setId(id);
+        loginPrincipal.setUsername(username);
         List<SimpleGrantedAuthority> authorities = JSON.parseArray(
-                authorityListString.toString(), SimpleGrantedAuthority.class);
+                authorityListString, SimpleGrantedAuthority.class);
         Authentication authentication = new UsernamePasswordAuthenticationToken(
-                username, null, authorities);
+                loginPrincipal, null, authorities);
 
         // 将用户信息封装到Security的上下文中
         SecurityContext securityContext = SecurityContextHolder.getContext();

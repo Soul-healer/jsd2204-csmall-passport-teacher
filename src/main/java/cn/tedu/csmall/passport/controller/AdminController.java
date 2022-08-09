@@ -9,6 +9,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,6 +40,7 @@ public class AdminController {
 
     @ApiOperation("添加管理员")
     @ApiOperationSupport(order = 100)
+    @PreAuthorize("hasAuthority('/ams/admin/update')")
     @PostMapping("/add-new")
     public JsonResult<Void> addNew(@Valid AdminAddNewDTO adminAddNewDTO) {
         log.debug("准备处理【添加管理员】的请求：{}", adminAddNewDTO);

@@ -4,12 +4,14 @@ import cn.tedu.csmall.passport.mapper.AdminMapper;
 import cn.tedu.csmall.passport.pojo.vo.AdminLoginInfoVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -32,22 +34,22 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throw new UsernameNotFoundException(message);
         }
 
-        // 从查询结果中找出权限信息
-        List<String> permissions = loginInfo.getPermissions();
-
-        // 准备返回结果
         log.debug("根据用户名【{}】从数据库查询到有效的用户信息：{}", s, loginInfo);
-        UserDetails userDetails = User.builder()
-                .username(loginInfo.getUsername())
-                .password(loginInfo.getPassword())
-                .accountExpired(false) // 账号是否已经过期
-                .accountLocked(false) // 账号是否已经锁定
-                .credentialsExpired(false) // 认证是否已经过期
-                .disabled(loginInfo.getEnable() == 0) // 是否已经禁用
-                .authorities(permissions.toArray(new String[]{})) // 权限，注意，此方法的参数值不可以为null
-                .build();
-        log.debug("即将向Spring Security返回UserDetails：{}", userDetails);
-        return userDetails;
+        // 从查询结果中找出权限信息，转换成Collection<? extends GrantedAuthority>
+        List<String> permissions = loginInfo.getPermissions(); // /ams/admin/delete
+        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        for (String permission : permissions) {
+            authorities.add(new SimpleGrantedAuthority(permission));
+        }
+
+        // 返回AdminDetails类型的对象
+        AdminDetails adminDetails = new AdminDetails(
+                loginInfo.getUsername(), loginInfo.getPassword(),
+                loginInfo.getEnable() == 1, authorities);
+        adminDetails.setId(loginInfo.getId());
+
+        log.debug("即将向Spring Security返回UserDetails：{}", adminDetails);
+        return adminDetails;
     }
 
 }

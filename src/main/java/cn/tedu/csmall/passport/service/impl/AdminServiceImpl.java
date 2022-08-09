@@ -5,6 +5,7 @@ import cn.tedu.csmall.passport.mapper.AdminMapper;
 import cn.tedu.csmall.passport.pojo.dto.AdminAddNewDTO;
 import cn.tedu.csmall.passport.pojo.dto.AdminLoginDTO;
 import cn.tedu.csmall.passport.pojo.entity.Admin;
+import cn.tedu.csmall.passport.pojo.vo.AdminLoginInfoVO;
 import cn.tedu.csmall.passport.security.AdminDetails;
 import cn.tedu.csmall.passport.service.IAdminService;
 import cn.tedu.csmall.passport.web.ServiceCode;

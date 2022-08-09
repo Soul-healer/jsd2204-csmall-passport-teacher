@@ -7,6 +7,7 @@ import cn.tedu.csmall.passport.pojo.dto.AdminLoginDTO;
 import cn.tedu.csmall.passport.pojo.entity.Admin;
 import cn.tedu.csmall.passport.service.IAdminService;
 import cn.tedu.csmall.passport.web.ServiceCode;
+import com.alibaba.fastjson.JSON;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.slf4j.Slf4j;
@@ -15,11 +16,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -56,13 +59,19 @@ public class AdminServiceImpl implements IAdminService {
         // 处理认证结果
         User loginUser = (User) authenticateResult.getPrincipal();
         log.debug("认证结果中的用户名：{}", loginUser.getUsername());
+        Collection<GrantedAuthority> authorities = loginUser.getAuthorities();
+        log.debug("认证结果中的权限列表：{}", authorities);
+        // 【重要】将权限列表转换成JSON格式，用于存储到JWT中
+        String authorityListString = JSON.toJSONString(authorities);
 
         // 生成JWT
         String secretKey = "nmlfdasfdsaurefuifdknjfdskjhajhef";
         // 准备Claims
         Map<String, Object> claims = new HashMap<>();
         claims.put("username", loginUser.getUsername());
+        claims.put("authorities", authorityListString);
         log.debug("生成JWT，向JWT中存入username：{}", loginUser.getUsername());
+        log.debug("生成JWT，向JWT中存入authorities：{}", authorityListString);
         // JWT的组成部分：Header（头），Payload（载荷），Signature（签名）
         String jwt = Jwts.builder()
                 // Header：用于声明算法与此数据的类型，以下配置的属性名是固定的

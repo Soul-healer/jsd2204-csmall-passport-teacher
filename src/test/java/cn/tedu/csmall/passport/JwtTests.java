@@ -31,7 +31,7 @@ public class JwtTests {
                 .setHeaderParam("typ", "jwt")
                 // Payload：用于添加自定义数据，并声明有效期
                 .setClaims(claims)
-                .setExpiration(new Date(System.currentTimeMillis() + 3 * 60 * 1000))
+                .setExpiration(new Date(System.currentTimeMillis() + 3 * 1000))
                 // Signature：用于指定算法与密钥（盐）
                 .signWith(SignatureAlgorithm.HS256, secretKey)
                 .compact();

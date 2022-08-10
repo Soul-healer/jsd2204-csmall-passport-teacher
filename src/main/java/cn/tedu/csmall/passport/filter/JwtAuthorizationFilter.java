@@ -1,6 +1,8 @@
 package cn.tedu.csmall.passport.filter;
 
 import cn.tedu.csmall.passport.security.LoginPrincipal;
+import cn.tedu.csmall.passport.web.JsonResult;
+import cn.tedu.csmall.passport.web.ServiceCode;
 import com.alibaba.fastjson.JSON;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +20,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 /**
@@ -57,6 +60,9 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             return;
         }
 
+        // 设置响应结果的文档类型，主要用于处理解析JWT时的异常
+        response.setContentType("application/json; charset=utf-8");
+
         // 尝试解析JWT
         String secretKey = "nmlfdasfdsaurefuifdknjfdskjhajhef";
         Claims claims = null;
@@ -64,15 +70,39 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwt).getBody();
         } catch (MalformedJwtException e) {
             log.warn("解析JWT失败：{}：{}", e.getClass().getName(), e.getMessage());
+            JsonResult<Void> jsonResult = JsonResult.fail(
+                    ServiceCode.ERR_JWT_PARSE, "无法获取到有效的登录信息，请重新登录！");
+            String jsonResultString = JSON.toJSONString(jsonResult);
+            PrintWriter writer = response.getWriter();
+            writer.println(jsonResultString);
+            writer.close();
             return;
         } catch (SignatureException e) {
             log.warn("解析JWT失败：{}：{}", e.getClass().getName(), e.getMessage());
+            JsonResult<Void> jsonResult = JsonResult.fail(
+                    ServiceCode.ERR_JWT_PARSE, "无法获取到有效的登录信息，请重新登录！");
+            String jsonResultString = JSON.toJSONString(jsonResult);
+            PrintWriter writer = response.getWriter();
+            writer.println(jsonResultString);
+            writer.close();
             return;
         } catch (ExpiredJwtException e) {
             log.warn("解析JWT失败：{}：{}", e.getClass().getName(), e.getMessage());
+            JsonResult<Void> jsonResult = JsonResult.fail(
+                    ServiceCode.ERR_JWT_EXPIRED, "登录信息已过期，请重新登录！");
+            String jsonResultString = JSON.toJSONString(jsonResult);
+            PrintWriter writer = response.getWriter();
+            writer.println(jsonResultString);
+            writer.close();
             return;
         } catch (Throwable e) {
             log.warn("解析JWT失败：{}：{}", e.getClass().getName(), e.getMessage());
+            JsonResult<Void> jsonResult = JsonResult.fail(
+                    ServiceCode.ERR_JWT_PARSE, "无法获取到有效的登录信息，请重新登录！");
+            String jsonResultString = JSON.toJSONString(jsonResult);
+            PrintWriter writer = response.getWriter();
+            writer.println(jsonResultString);
+            writer.close();
             return;
         }
 

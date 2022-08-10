@@ -48,5 +48,13 @@ public interface ServiceCode {
      * 修改数据时的错误
      */
     Integer ERR_UPDATE = 50003;
+    /**
+     * 解析JWT失败：格式错误，或签名错误
+     */
+    Integer ERR_JWT_PARSE = 60000;
+    /**
+     * 解析JWT失败：过期
+     */
+    Integer ERR_JWT_EXPIRED = 60001;
 
 }

@@ -16,5 +16,9 @@ knife4j:
 
 # 自定义配置
 csmall:
+  # JWT相关配置
   jwt:
+    # 密钥
     secret-key: xnGFDfdklafLJKuj5EGr72jkhFDxcuXFDiyGdfnGTli45ed
+    # 有效时长，以分钟为单位
+    duration-in-minute: 10000

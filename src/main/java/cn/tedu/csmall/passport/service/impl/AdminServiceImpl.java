@@ -45,6 +45,8 @@ public class AdminServiceImpl implements IAdminService {
     private AuthenticationManager authenticationManager;
     @Value("${csmall.jwt.secret-key}")
     private String secretKey;
+    @Value("${csmall.jwt.duration-in-minute}")
+    private Long durationInMinute;
 
     @Override
     public String login(AdminLoginDTO adminLoginDTO) {
@@ -68,7 +70,7 @@ public class AdminServiceImpl implements IAdminService {
         String authorityListString = JSON.toJSONString(authorities);
 
         // 生成JWT
-        log.debug("准备生成JWT，secretKey：{}", secretKey);
+        log.debug("准备生成JWT，有效时长：{}分钟，密钥：{}", durationInMinute, secretKey);
         // 准备Claims
         Map<String, Object> claims = new HashMap<>();
         claims.put("id", loginUser.getId());
@@ -84,7 +86,7 @@ public class AdminServiceImpl implements IAdminService {
                 .setHeaderParam("typ", "jwt")
                 // Payload：用于添加自定义数据，并声明有效期
                 .setClaims(claims)
-                .setExpiration(new Date(System.currentTimeMillis() + 14 * 24 * 60 * 60 * 1000))
+                .setExpiration(new Date(System.currentTimeMillis() + durationInMinute * 60 * 1000))
                 // Signature：用于指定算法与密钥（盐）
                 .signWith(SignatureAlgorithm.HS256, secretKey)
                 .compact();

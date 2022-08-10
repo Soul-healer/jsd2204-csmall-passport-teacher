@@ -2,6 +2,7 @@ package cn.tedu.csmall.passport.service;
 
 import cn.tedu.csmall.passport.pojo.dto.AdminAddNewDTO;
 import cn.tedu.csmall.passport.pojo.dto.AdminLoginDTO;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 管理员业务接口
@@ -9,6 +10,7 @@ import cn.tedu.csmall.passport.pojo.dto.AdminLoginDTO;
  * @author java@tedu.cn
  * @version 0.0.1
  */
+@Transactional
 public interface IAdminService {
 
     /**

@@ -17,6 +17,14 @@ public interface ServiceCode {
      */
     Integer ERR_BAD_REQUEST = 40000;
     /**
+     * 未授权的访问
+     */
+    Integer ERR_UNAUTHORIZED = 40100;
+    /**
+     * 未授权的访问：账号禁用
+     */
+    Integer ERR_UNAUTHORIZED_DISABLED = 40101;
+    /**
      * 相关资源或数据不存在
      */
     Integer ERR_NOT_FOUND = 40400;

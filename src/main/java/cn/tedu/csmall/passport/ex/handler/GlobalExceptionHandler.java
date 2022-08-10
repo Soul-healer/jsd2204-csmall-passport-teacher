@@ -4,6 +4,8 @@ import cn.tedu.csmall.passport.ex.ServiceException;
 import cn.tedu.csmall.passport.web.JsonResult;
 import cn.tedu.csmall.passport.web.ServiceCode;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -37,6 +39,20 @@ public class GlobalExceptionHandler {
         }
 
         return JsonResult.fail(ServiceCode.ERR_BAD_REQUEST, stringBuilder.toString());
+    }
+
+    @ExceptionHandler
+    public JsonResult<Void> handleBadCredentialsException(BadCredentialsException e) {
+        String message = "登录失败，用户名或密码错误！";
+        log.debug("处理BadCredentialsException：{}", message);
+        return JsonResult.fail(ServiceCode.ERR_UNAUTHORIZED, message);
+    }
+
+    @ExceptionHandler
+    public JsonResult<Void> handleDisabledException(DisabledException e) {
+        String message = "登录失败，此账号已禁用！";
+        log.debug("处理DisabledException：{}", message);
+        return JsonResult.fail(ServiceCode.ERR_UNAUTHORIZED_DISABLED, message);
     }
 
     @ExceptionHandler

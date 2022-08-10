@@ -2,8 +2,7 @@ package cn.tedu.csmall.passport.filter;
 
 import cn.tedu.csmall.passport.security.LoginPrincipal;
 import com.alibaba.fastjson.JSON;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -60,7 +59,24 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
         // 尝试解析JWT
         String secretKey = "nmlfdasfdsaurefuifdknjfdskjhajhef";
-        Claims claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwt).getBody();
+        Claims claims = null;
+        try {
+            claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwt).getBody();
+        } catch (MalformedJwtException e) {
+            log.warn("解析JWT失败：{}：{}", e.getClass().getName(), e.getMessage());
+            return;
+        } catch (SignatureException e) {
+            log.warn("解析JWT失败：{}：{}", e.getClass().getName(), e.getMessage());
+            return;
+        } catch (ExpiredJwtException e) {
+            log.warn("解析JWT失败：{}：{}", e.getClass().getName(), e.getMessage());
+            return;
+        } catch (Throwable e) {
+            log.warn("解析JWT失败：{}：{}", e.getClass().getName(), e.getMessage());
+            return;
+        }
+
+        // 从JWT的解析结果中获取数据
         Long id = claims.get("id", Long.class);
         String username = claims.get("username", String.class);
         String authorityListString = claims.get("authorities", String.class);

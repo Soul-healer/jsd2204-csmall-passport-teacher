@@ -25,6 +25,10 @@ public interface ServiceCode {
      */
     Integer ERR_UNAUTHORIZED_DISABLED = 40101;
     /**
+     * 禁止访问，通常是已登录，但无权限
+     */
+    Integer ERR_FORBIDDEN = 40300;
+    /**
      * 相关资源或数据不存在
      */
     Integer ERR_NOT_FOUND = 40400;

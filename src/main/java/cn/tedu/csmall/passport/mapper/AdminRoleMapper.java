@@ -20,4 +20,6 @@ public interface AdminRoleMapper {
      */
     int insert(AdminRole adminRole);
 
+    int insertBatch(AdminRole[] adminRoleList);
+
 }

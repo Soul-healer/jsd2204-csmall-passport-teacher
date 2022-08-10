@@ -65,4 +65,10 @@ public class AdminAddNewDTO implements Serializable {
     @ApiModelProperty("是否启用，1=启用，0=未启用")
     private Integer enable;
 
+    /**
+     * 管理员关联到的若干个角色的id
+     */
+    @ApiModelProperty("管理员关联到的若干个角色的id")
+    private Long[] roleIds;
+
 }

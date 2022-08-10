@@ -20,6 +20,12 @@ public interface AdminRoleMapper {
      */
     int insert(AdminRole adminRole);
 
+    /**
+     * 批量插入管理员与角色的关联数据
+     *
+     * @param adminRoleList 若干条管理员与角色的关联数据
+     * @return 受影响的行数
+     */
     int insertBatch(AdminRole[] adminRoleList);
 
 }

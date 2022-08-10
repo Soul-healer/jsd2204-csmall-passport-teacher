@@ -2,9 +2,11 @@ package cn.tedu.csmall.passport.service.impl;
 
 import cn.tedu.csmall.passport.ex.ServiceException;
 import cn.tedu.csmall.passport.mapper.AdminMapper;
+import cn.tedu.csmall.passport.mapper.AdminRoleMapper;
 import cn.tedu.csmall.passport.pojo.dto.AdminAddNewDTO;
 import cn.tedu.csmall.passport.pojo.dto.AdminLoginDTO;
 import cn.tedu.csmall.passport.pojo.entity.Admin;
+import cn.tedu.csmall.passport.pojo.entity.AdminRole;
 import cn.tedu.csmall.passport.security.AdminDetails;
 import cn.tedu.csmall.passport.service.IAdminService;
 import cn.tedu.csmall.passport.web.ServiceCode;
@@ -22,6 +24,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -41,6 +44,8 @@ public class AdminServiceImpl implements IAdminService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private AdminMapper adminMapper;
+    @Autowired
+    private AdminRoleMapper adminRoleMapper;
     @Autowired
     private AuthenticationManager authenticationManager;
     @Value("${csmall.jwt.secret-key}")
@@ -127,7 +132,31 @@ public class AdminServiceImpl implements IAdminService {
         // 判断受影响的行数是否不等于1
         if (rows != 1) {
             // 是：日志，抛出ServiceException
-            String message = "添加管理员失败，服务器忙，请稍后再次尝试！";
+            String message = "添加管理员失败，服务器忙，请稍后再次尝试！[错误代码：1]";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERR_INSERT, message);
+        }
+
+        // 向管理员与角色关联的表中插入数据
+        log.debug("准备向管理员与角色关联的表中插入数据");
+        Long adminId = admin.getId();
+        Long[] roleIds = adminAddNewDTO.getRoleIds();
+        LocalDateTime now = LocalDateTime.now();
+
+        AdminRole[] adminRoleList = new AdminRole[roleIds.length];
+        for (int i = 0; i < roleIds.length; i++) {
+            AdminRole adminRole = new AdminRole();
+            adminRole.setAdminId(adminId);
+            adminRole.setRoleId(roleIds[i]);
+            adminRole.setGmtCreate(now);
+            adminRole.setGmtModified(now);
+            adminRoleList[i] = adminRole;
+        }
+        rows = adminRoleMapper.insertBatch(adminRoleList);
+        // 判断受影响的行数是否小于1（可能插入多条数据，所以，大于或等于1的值均视为正确）
+        if (rows < 1) {
+            // 是：日志，抛出ServiceException
+            String message = "添加管理员失败，服务器忙，请稍后再次尝试！[错误代码：2]";
             log.warn(message);
             throw new ServiceException(ServiceCode.ERR_INSERT, message);
         }

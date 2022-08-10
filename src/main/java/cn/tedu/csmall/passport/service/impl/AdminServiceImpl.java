@@ -14,6 +14,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -42,6 +43,8 @@ public class AdminServiceImpl implements IAdminService {
     private AdminMapper adminMapper;
     @Autowired
     private AuthenticationManager authenticationManager;
+    @Value("${csmall.jwt.secret-key}")
+    private String secretKey;
 
     @Override
     public String login(AdminLoginDTO adminLoginDTO) {
@@ -65,7 +68,7 @@ public class AdminServiceImpl implements IAdminService {
         String authorityListString = JSON.toJSONString(authorities);
 
         // 生成JWT
-        String secretKey = "nmlfdasfdsaurefuifdknjfdskjhajhef";
+        log.debug("准备生成JWT，secretKey：{}", secretKey);
         // 准备Claims
         Map<String, Object> claims = new HashMap<>();
         claims.put("id", loginUser.getId());

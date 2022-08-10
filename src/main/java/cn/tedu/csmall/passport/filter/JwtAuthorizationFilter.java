@@ -6,6 +6,7 @@ import cn.tedu.csmall.passport.web.ServiceCode;
 import com.alibaba.fastjson.JSON;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -33,6 +34,9 @@ import java.util.List;
 @Slf4j
 @Component
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
+
+    @Value("${csmall.jwt.secret-key}")
+    private String secretKey;
 
     public JwtAuthorizationFilter() {
         log.debug("创建过滤器：JwtAuthorizationFilter");
@@ -64,7 +68,6 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         response.setContentType("application/json; charset=utf-8");
 
         // 尝试解析JWT
-        String secretKey = "nmlfdasfdsaurefuifdknjfdskjhajhef";
         Claims claims = null;
         try {
             claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwt).getBody();

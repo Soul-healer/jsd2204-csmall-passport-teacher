@@ -13,3 +13,8 @@ mybatis:
 # 开启Knife4j的增强模式
 knife4j:
   enable: true
+
+# 自定义配置
+csmall:
+  jwt:
+    secret-key: xnGFDfdklafLJKuj5EGr72jkhFDxcuXFDiyGdfnGTli45ed

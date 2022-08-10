@@ -17,7 +17,7 @@ public class AdminServiceTests {
     @Test
     void testAddNew() {
         AdminAddNewDTO adminAddNewDTO = new AdminAddNewDTO();
-        adminAddNewDTO.setUsername("test-admin-109");
+        adminAddNewDTO.setUsername("test-admin-160");
         adminAddNewDTO.setPassword("123456");
 
         Long[] roleIds = {2L, 4L};

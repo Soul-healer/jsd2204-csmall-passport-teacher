@@ -23,6 +23,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -99,6 +100,7 @@ public class AdminServiceImpl implements IAdminService {
         return jwt;
     }
 
+    @Transactional
     @Override
     public void addNew(AdminAddNewDTO adminAddNewDTO) {
         // 日志

@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.io.IOException;
+
 @Slf4j
 @SpringBootTest
 public class AdminServiceTests {
@@ -17,7 +19,7 @@ public class AdminServiceTests {
     @Test
     void testAddNew() {
         AdminAddNewDTO adminAddNewDTO = new AdminAddNewDTO();
-        adminAddNewDTO.setUsername("test-admin-160");
+        adminAddNewDTO.setUsername("test-admin-165");
         adminAddNewDTO.setPassword("123456");
 
         Long[] roleIds = {2L, 4L};

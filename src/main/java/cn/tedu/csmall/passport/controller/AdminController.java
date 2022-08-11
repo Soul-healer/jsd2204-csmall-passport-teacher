@@ -2,6 +2,7 @@ package cn.tedu.csmall.passport.controller;
 
 import cn.tedu.csmall.passport.pojo.dto.AdminAddNewDTO;
 import cn.tedu.csmall.passport.pojo.dto.AdminLoginDTO;
+import cn.tedu.csmall.passport.pojo.vo.AdminListItemVO;
 import cn.tedu.csmall.passport.security.LoginPrincipal;
 import cn.tedu.csmall.passport.service.IAdminService;
 import cn.tedu.csmall.passport.web.JsonResult;
@@ -12,12 +13,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Api(tags = "1. 管理员管理模块")
 @Slf4j
@@ -52,6 +55,16 @@ public class AdminController {
         log.debug("当前登录的用户（当事人）的用户名：{}", loginPrincipal.getUsername());
         adminService.addNew(adminAddNewDTO);
         return JsonResult.ok();
+    }
+
+    @ApiOperation("查询管理员列表")
+    @ApiOperationSupport(order = 400)
+    @PreAuthorize("hasAuthority('/ams/admin/read')")
+    @GetMapping("")
+    public JsonResult<List<AdminListItemVO>> list() {
+        log.debug("准备处理【查询管理员列表】的请求");
+        List<AdminListItemVO> list = adminService.list();
+        return JsonResult.ok(list);
     }
 
 }

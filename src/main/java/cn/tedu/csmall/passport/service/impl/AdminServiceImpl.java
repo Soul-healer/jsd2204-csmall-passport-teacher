@@ -7,6 +7,7 @@ import cn.tedu.csmall.passport.pojo.dto.AdminAddNewDTO;
 import cn.tedu.csmall.passport.pojo.dto.AdminLoginDTO;
 import cn.tedu.csmall.passport.pojo.entity.Admin;
 import cn.tedu.csmall.passport.pojo.entity.AdminRole;
+import cn.tedu.csmall.passport.pojo.vo.AdminListItemVO;
 import cn.tedu.csmall.passport.security.AdminDetails;
 import cn.tedu.csmall.passport.service.IAdminService;
 import cn.tedu.csmall.passport.web.ServiceCode;
@@ -25,10 +26,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 处理管理员业务的实现类
@@ -160,6 +158,13 @@ public class AdminServiceImpl implements IAdminService {
             log.warn(message);
             throw new ServiceException(ServiceCode.ERR_INSERT, message);
         }
+    }
+
+    @Override
+    public List<AdminListItemVO> list() {
+        // 日志
+        log.debug("开始处理【查询管理员列表】的业务");
+        return adminMapper.list();
     }
 
 }

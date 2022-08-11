@@ -3,6 +3,7 @@ package cn.tedu.csmall.passport.mapper;
 import cn.tedu.csmall.passport.pojo.entity.Admin;
 import cn.tedu.csmall.passport.pojo.vo.AdminListItemVO;
 import cn.tedu.csmall.passport.pojo.vo.AdminLoginInfoVO;
+import cn.tedu.csmall.passport.pojo.vo.AdminStandardVO;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,10 +31,24 @@ public class AdminMapperTests {
     }
 
     @Test
+    void testDeleteById() {
+        Long id = 4L;
+        int rows = mapper.deleteById(id);
+        log.debug("根据id={}删除管理员成功，受影响的行数={}", id, rows);
+    }
+
+    @Test
     void testCountByUsername() {
         String username = "test-admin-007";
         int count = mapper.countByUsername(username);
         log.debug("根据用户名【{}】统计，数量={}", username, count);
+    }
+
+    @Test
+    void testGetStandardById() {
+        Long id = 6L;
+        Object queryResult = mapper.getStandardById(id);
+        log.debug("根据id={}查询管理员详情，查询结果={}", id, queryResult);
     }
 
     @Test

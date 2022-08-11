@@ -23,4 +23,12 @@
         </foreach>
     </insert>
 
+    <!-- int deleteByAdminId(Long adminId); -->
+    <delete id="deleteByAdminId">
+        DELETE FROM
+            ams_admin_role
+        WHERE
+            admin_id=#{adminId}
+    </delete>
+
 </mapper>

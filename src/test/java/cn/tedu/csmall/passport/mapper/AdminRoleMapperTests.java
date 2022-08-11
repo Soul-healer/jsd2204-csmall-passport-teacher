@@ -47,4 +47,11 @@ public class AdminRoleMapperTests {
         log.debug("批量插入管理员与角色的关联数据成功，受影响的行数 = {}", rows);
     }
 
+    @Test
+    void testDeleteByAdminId() {
+        Long adminId = 24L;
+        int rows = mapper.deleteByAdminId(adminId);
+        log.debug("根据管理员id={}删除管理员与角色的关联数据，受影响的行数={}", adminId, rows);
+    }
+
 }

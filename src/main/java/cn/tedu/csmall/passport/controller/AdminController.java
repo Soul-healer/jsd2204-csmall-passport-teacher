@@ -8,15 +8,13 @@ import cn.tedu.csmall.passport.service.IAdminService;
 import cn.tedu.csmall.passport.web.JsonResult;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
@@ -54,6 +52,18 @@ public class AdminController {
         log.debug("当前登录的用户（当事人）的id：{}", loginPrincipal.getId());
         log.debug("当前登录的用户（当事人）的用户名：{}", loginPrincipal.getUsername());
         adminService.addNew(adminAddNewDTO);
+        return JsonResult.ok();
+    }
+
+    // http://localhost:9081/admins/5/delete
+    @ApiOperation("根据id删除管理员")
+    @ApiOperationSupport(order = 200)
+    @ApiImplicitParam(name = "id", value = "管理员id", required = true, dataType = "long")
+    @PreAuthorize("hasAuthority('/ams/admin/delete')")
+    @PostMapping("/{id:[0-9]+}/delete")
+    public JsonResult<Void> deleteById(@PathVariable Long id) {
+        log.debug("准备处理【根据id删除管理员】的请求：id={}", id);
+        adminService.deleteById(id);
         return JsonResult.ok();
     }
 

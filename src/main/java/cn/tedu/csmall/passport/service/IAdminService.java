@@ -32,6 +32,13 @@ public interface IAdminService {
     void addNew(AdminAddNewDTO adminAddNewDTO);
 
     /**
+     * 根据管理员id删除管理员
+     *
+     * @param id 管理员id
+     */
+    void deleteById(Long id);
+
+    /**
      * 查询管理员列表
      *
      * @return 管理员列表

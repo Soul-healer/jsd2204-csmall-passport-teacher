@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.IOException;
+import java.util.List;
 
 @Slf4j
 @SpringBootTest
@@ -30,6 +31,15 @@ public class AdminServiceTests {
             log.debug("添加管理员成功！");
         } catch (ServiceException e) {
             log.debug(e.getMessage());
+        }
+    }
+
+    @Test
+    void testList() {
+        List<?> list = service.list();
+        log.debug("查询管理员列表，结果集中的数据的数量：{}", list.size());
+        for (Object item : list) {
+            log.debug("{}", item);
         }
     }
 

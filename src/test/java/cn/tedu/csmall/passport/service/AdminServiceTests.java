@@ -17,11 +17,11 @@ public class AdminServiceTests {
     @Test
     void testAddNew() {
         AdminAddNewDTO adminAddNewDTO = new AdminAddNewDTO();
-        adminAddNewDTO.setUsername("test-admin-167");
+        adminAddNewDTO.setUsername("test-admin-160");
         adminAddNewDTO.setPassword("123456");
 
-//        Long[] roleIds = {2L, 4L};
-//        adminAddNewDTO.setRoleIds(roleIds);
+        Long[] roleIds = {2L, 4L};
+        adminAddNewDTO.setRoleIds(roleIds);
 
         try {
             service.addNew(adminAddNewDTO);

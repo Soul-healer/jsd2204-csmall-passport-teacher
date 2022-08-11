@@ -8,6 +8,7 @@ import cn.tedu.csmall.passport.pojo.dto.AdminLoginDTO;
 import cn.tedu.csmall.passport.pojo.entity.Admin;
 import cn.tedu.csmall.passport.pojo.entity.AdminRole;
 import cn.tedu.csmall.passport.pojo.vo.AdminListItemVO;
+import cn.tedu.csmall.passport.pojo.vo.AdminStandardVO;
 import cn.tedu.csmall.passport.security.AdminDetails;
 import cn.tedu.csmall.passport.service.IAdminService;
 import cn.tedu.csmall.passport.web.ServiceCode;
@@ -157,6 +158,40 @@ public class AdminServiceImpl implements IAdminService {
             String message = "添加管理员失败，服务器忙，请稍后再次尝试！[错误代码：2]";
             log.warn(message);
             throw new ServiceException(ServiceCode.ERR_INSERT, message);
+        }
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        log.debug("开始处理【根据id删除管理员】的业务：id={}", id);
+        // 调用adminMapper根据参数id执行查询
+        AdminStandardVO queryResult = adminMapper.getStandardById(id);
+        // 判断查询结果是否为null
+        if (queryResult == null) {
+            // 抛出ServiceException，业务状态码：40400
+            String message = "删除管理员失败！尝试访问的数据不存在！";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERR_NOT_FOUND, message);
+        }
+
+        // 调用adminMapper根据参数id删除管理员的数据，并获取返回值
+        int rows = adminMapper.deleteById(id);
+        // 判断返回值是否不为1
+        if (rows != 1) {
+            // 抛出ServiceException，业务状态码：DELETE对应的常量
+            String message = "删除管理员失败！服务器忙，请稍后再次尝试！[错误代码：1]";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERR_DELETE, message);
+        }
+
+        // 调用adminRoleMapper根据参数id删除关联数据，并获取返回值
+        rows = adminRoleMapper.deleteByAdminId(id);
+        // 判断返回值是否小于1
+        if (rows < 1) {
+            // 抛出ServiceException，业务状态码：DELETE对应的常量
+            String message = "删除管理员失败！服务器忙，请稍后再次尝试！[错误代码：2]";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERR_DELETE, message);
         }
     }
 

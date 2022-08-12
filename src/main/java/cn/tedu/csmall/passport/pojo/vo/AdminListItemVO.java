@@ -1,5 +1,6 @@
 package cn.tedu.csmall.passport.pojo.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -67,6 +68,7 @@ public class AdminListItemVO implements Serializable {
     /**
      * 最后登录时间（冗余）
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime gmtLastLogin;
 
 }

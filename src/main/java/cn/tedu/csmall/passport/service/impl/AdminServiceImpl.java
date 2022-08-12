@@ -196,6 +196,78 @@ public class AdminServiceImpl implements IAdminService {
     }
 
     @Override
+    public void setEnable(Long id) {
+        log.debug("开始处理【启用管理员账号】的业务：id={}", id);
+        // 根据id查询管理员数据
+        AdminStandardVO queryResult = adminMapper.getStandardById(id);
+        // 判断查询结果是否为null
+        if (queryResult == null) {
+            // 是：ServiceException：NOT_FOUND
+            String message = "启用管理员账号失败！尝试访问的数据不存在！";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERR_NOT_FOUND, message);
+        }
+
+        // 判断查询结果中的enable是否为1
+        if (queryResult.getEnable() == 1) {
+            // 是：ServiceException：CONFLICT
+            String message = "启用管理员账号失败！当前账号已经启用！";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERR_CONFLICT, message);
+        }
+
+        // Admin admin = new Admin(); admin.setId(id); admin.setEnable(1);
+        Admin admin = new Admin();
+        admin.setId(id);
+        admin.setEnable(1);
+        // 执行更新，获取返回值
+        int rows = adminMapper.update(admin);
+        // 判断返回值是否不为1
+        if (rows != 1) {
+            // 是：ServiceException：UPDATE
+            String message = "启用管理员账号失败！服务器忙，请稍后再次尝试！";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERR_UPDATE, message);
+        }
+    }
+
+    @Override
+    public void setDisable(Long id) {
+        log.debug("开始处理【禁用管理员账号】的业务：id={}", id);
+        // 根据id查询管理员数据
+        AdminStandardVO queryResult = adminMapper.getStandardById(id);
+        // 判断查询结果是否为null
+        if (queryResult == null) {
+            // 是：ServiceException：NOT_FOUND
+            String message = "禁用管理员账号失败！尝试访问的数据不存在！";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERR_NOT_FOUND, message);
+        }
+
+        // 判断查询结果中的enable是否为1
+        if (queryResult.getEnable() == 0) {
+            // 是：ServiceException：CONFLICT
+            String message = "禁用管理员账号失败！当前账号已经禁用！";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERR_CONFLICT, message);
+        }
+
+        // Admin admin = new Admin(); admin.setId(id); admin.setEnable(1);
+        Admin admin = new Admin();
+        admin.setId(id);
+        admin.setEnable(0);
+        // 执行更新，获取返回值
+        int rows = adminMapper.update(admin);
+        // 判断返回值是否不为1
+        if (rows != 1) {
+            // 是：ServiceException：UPDATE
+            String message = "启用管理员账号失败！服务器忙，请稍后再次尝试！";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERR_UPDATE, message);
+        }
+    }
+
+    @Override
     public List<AdminListItemVO> list() {
         // 日志
         log.debug("开始处理【查询管理员列表】的业务");

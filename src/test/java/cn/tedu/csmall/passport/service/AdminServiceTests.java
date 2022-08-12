@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.io.IOException;
 import java.util.List;
 
 @Slf4j
@@ -29,6 +28,17 @@ public class AdminServiceTests {
         try {
             service.addNew(adminAddNewDTO);
             log.debug("添加管理员成功！");
+        } catch (ServiceException e) {
+            log.debug(e.getMessage());
+        }
+    }
+
+    @Test
+    void testDeleteById() {
+        Long id = 10L;
+        try {
+            service.deleteById(id);
+            log.debug("删除管理员成功！");
         } catch (ServiceException e) {
             log.debug(e.getMessage());
         }

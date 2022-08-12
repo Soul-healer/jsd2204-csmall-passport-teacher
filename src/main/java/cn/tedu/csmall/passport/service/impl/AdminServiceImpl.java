@@ -261,7 +261,7 @@ public class AdminServiceImpl implements IAdminService {
         // 判断返回值是否不为1
         if (rows != 1) {
             // 是：ServiceException：UPDATE
-            String message = "启用管理员账号失败！服务器忙，请稍后再次尝试！";
+            String message = "禁用管理员账号失败！服务器忙，请稍后再次尝试！";
             log.warn(message);
             throw new ServiceException(ServiceCode.ERR_UPDATE, message);
         }

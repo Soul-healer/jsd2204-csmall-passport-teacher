@@ -39,6 +39,18 @@ public interface IAdminService {
     void deleteById(Long id);
 
     /**
+     * 启用管理员账号
+     * @param id 管理员id
+     */
+    void setEnable(Long id);
+
+    /**
+     * 禁用管理员账号
+     * @param id 管理员id
+     */
+    void setDisable(Long id);
+
+    /**
      * 查询管理员列表
      *
      * @return 管理员列表

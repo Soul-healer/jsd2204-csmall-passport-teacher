@@ -15,6 +15,8 @@ public interface AdminMapper {
 
     int deleteById(Long id);
 
+    int update(Admin admin);
+
     int countByUsername(String username);
 
     AdminStandardVO getStandardById(Long id);

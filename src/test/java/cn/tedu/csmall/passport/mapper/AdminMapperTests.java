@@ -31,6 +31,18 @@ public class AdminMapperTests {
     }
 
     @Test
+    void testUpdate() {
+        Admin admin = new Admin();
+        admin.setId(2L);
+        admin.setEnable(1);
+        admin.setAvatar("http://www.baidu.com/avatar.png");
+        admin.setEmail("admin2@qq.com");
+
+        int rows = mapper.update(admin);
+        log.debug("修改数据完成，受影响的行数={}", rows);
+    }
+
+    @Test
     void testDeleteById() {
         Long id = 4L;
         int rows = mapper.deleteById(id);

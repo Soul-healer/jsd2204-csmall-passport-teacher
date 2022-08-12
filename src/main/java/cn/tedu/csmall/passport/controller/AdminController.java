@@ -67,6 +67,30 @@ public class AdminController {
         return JsonResult.ok();
     }
 
+    // http://localhost:9081/admins/5/enable
+    @ApiOperation("启用管理员账号")
+    @ApiOperationSupport(order = 300)
+    @ApiImplicitParam(name = "id", value = "管理员id", required = true, dataType = "long")
+    @PreAuthorize("hasAuthority('/ams/admin/update')")
+    @PostMapping("/{id:[0-9]+}/enable")
+    public JsonResult<Void> setEnable(@PathVariable Long id) {
+        log.debug("准备处理【启用管理员账号】的请求：id={}", id);
+        adminService.setEnable(id);
+        return JsonResult.ok();
+    }
+
+    // http://localhost:9081/admins/5/disable
+    @ApiOperation("禁用管理员账号")
+    @ApiOperationSupport(order = 301)
+    @ApiImplicitParam(name = "id", value = "管理员id", required = true, dataType = "long")
+    @PreAuthorize("hasAuthority('/ams/admin/update')")
+    @PostMapping("/{id:[0-9]+}/disable")
+    public JsonResult<Void> setDisable(@PathVariable Long id) {
+        log.debug("准备处理【禁用管理员账号】的请求：id={}", id);
+        adminService.setDisable(id);
+        return JsonResult.ok();
+    }
+
     @ApiOperation("查询管理员列表")
     @ApiOperationSupport(order = 400)
     @PreAuthorize("hasAuthority('/ams/admin/read')")

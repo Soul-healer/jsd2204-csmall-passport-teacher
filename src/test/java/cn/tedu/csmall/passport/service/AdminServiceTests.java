@@ -45,6 +45,28 @@ public class AdminServiceTests {
     }
 
     @Test
+    void testSetEnable() {
+        Long id = 200L;
+        try {
+            service.setEnable(id);
+            log.debug("启用管理员成功！");
+        } catch (ServiceException e) {
+            log.debug(e.getMessage());
+        }
+    }
+
+    @Test
+    void testSetDisable() {
+        Long id = 2L;
+        try {
+            service.setDisable(id);
+            log.debug("禁用管理员成功！");
+        } catch (ServiceException e) {
+            log.debug(e.getMessage());
+        }
+    }
+
+    @Test
     void testList() {
         List<?> list = service.list();
         log.debug("查询管理员列表，结果集中的数据的数量：{}", list.size());

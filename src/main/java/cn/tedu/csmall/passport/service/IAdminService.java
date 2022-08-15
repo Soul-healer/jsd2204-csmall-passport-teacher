@@ -40,12 +40,14 @@ public interface IAdminService {
 
     /**
      * 启用管理员账号
+     *
      * @param id 管理员id
      */
     void setEnable(Long id);
 
     /**
      * 禁用管理员账号
+     *
      * @param id 管理员id
      */
     void setDisable(Long id);
